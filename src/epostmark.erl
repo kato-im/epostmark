@@ -1,16 +1,12 @@
 -module(epostmark).
 
 -export([send_email/1]).
--export([send_email/2]).
 
 authentication_header() ->
     {ok, PK} = application:get_env(epostmark, postmark_key),
     {<<"X-Postmark-Server-Token">>, PK}.
 
 send_email(Json) ->
-    send_email(Json, []).
-
-send_email(Json, Headers) ->
     Response = lhttpc:request(
         "https://api.postmarkapp.com/email",
         "POST",
@@ -18,7 +14,7 @@ send_email(Json, Headers) ->
             authentication_header(),
             {<<"Content-Type">>, <<"application/json">>},
             {<<"Accept">>, <<"application/json">>}
-        ] ++ Headers,
+        ],
         Json,
         5000
     ),
