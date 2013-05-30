@@ -1,4 +1,4 @@
 epostmark
 =========
 
-Postmark Erlang Bindings
+Erlang Bindings for [Postmark](http://postmark.com)
