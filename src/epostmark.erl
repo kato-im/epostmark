@@ -27,10 +27,13 @@ handle_response({ok, {{422, "Unprocessable Entity"}, _, JsonResponse}}) ->
     Jterm = jiffy:decode(JsonResponse),
     case get_json_value([<<"ErrorCode">>], Jterm) of
         300 ->
-            {error, {illegal_to_address, JsonResponse}};
+            {error, illegal_to_address};
         _ ->
-            {error, JsonResponse}
-    end.
+            {error, Jterm}
+    end;
+
+handle_response({error, timeout}) ->
+    {error, timeout}.
 
 get_json_value(_, undefined) ->
     undefined;
